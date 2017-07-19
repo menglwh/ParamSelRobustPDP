@@ -107,7 +107,7 @@ if __name__=='__main__':
     pl.show()
 	
     print "delta"
-    print sstmp-ss2
+    print sstmp-ss2 
     
   
 
