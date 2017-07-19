@@ -80,7 +80,7 @@ if 1==1:
 	for j in range(0,numpy.size(bits)):
 			print "%d," %int(round(numpy.std(myresultsall[:,j]),0)),
 	#a = input("OK")
-  
+   
 
 
 
