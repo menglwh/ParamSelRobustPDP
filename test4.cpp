@@ -1,16 +1,26 @@
 // test.cpp : Defines the entry point for the console application.
 //
 
+#include "stdafx.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "/home/200499800036/src/gmp/gmp-6.0.0/gmp.h"
+#include <gmp.h>
+
+#include <windows.h>
 #include <time.h>
-#include <string.h>
+
+//////////////////////////////
+extern "C" {
+	int snprintf(char *str, size_t size, const char *format, va_list ap )
+	{
+		return _snprintf(str, size, format,  ap);
+	}
+}
+#pragma comment(lib, "./self-compiled/libgcc.a") 
+#pragma comment(lib, "./self-compiled/libgmp.a") 
 //////////////////////////////////////////////////////////////
 unsigned char *a;
 char *b_8;
-#define  __int64 long long
-
 int main(int argc, char **argv)
 {
 	srand((int)time(0));
@@ -22,12 +32,13 @@ int main(int argc, char **argv)
 	gmp_randinit_default(state);  
 	gmp_randseed_ui(state, long(seed)); 
 	//gmp_randseed_ui(state, long(5)); 
- 	
+    DWORD t1=GetTickCount();
+	
 
 	mpz_t f,d;
 	mpz_init_set_str(f,argv[1],10);//100000
 	mpz_init_set_str(d,argv[2],10);//100000
-	//gmp_printf("blocks f=%Zd d=%Zd\n",f,d);
+	gmp_printf("blocks f=%Zd d=%Zd\n",f,d);
     
 	size_t i_f,i_d;
 	i_f=atoi(argv[1]);
@@ -39,13 +50,10 @@ int main(int argc, char **argv)
 	mpz_add (f_and_d,f_and_d,d);
     mpz_div_ui(f_and_d,f_and_d,1);
 	mpz_add_ui (f_and_d,f_and_d,1);
-	//gmp_printf("F+D=%Zd\n",f_and_d);
+	gmp_printf("F+D=%Zd\n",f_and_d);
 	i_f_and_d=mpz_get_ui(f_and_d);
     b_8= (char *) malloc(i_f_and_d);
-	if (b_8==NULL)
-	{
-		return 1;
-	}
+	
    /////////////////////////////////////////
 	int k=atoi(argv[3]);//100
 	int n=atoi(argv[4]);//108
@@ -53,25 +61,22 @@ int main(int argc, char **argv)
 	mpz_t groups_t;
 	mpz_init(groups_t);
 	mpz_div_ui(groups_t,f,k);
-	//gmp_printf("groups %Zd \n",groups_t);
+	gmp_printf("groups %Zd \n",groups_t);
 
 	size_t groups=mpz_get_ui(groups_t);
-    //printf("groups  %u\n",groups);
+    printf("groups  %u\n",groups);
 	a=(unsigned char *)malloc(groups);
-	if (a==NULL)
-	{
-		return 2;
-	}
+
 	int ll=atoi(argv[7]);//times 500
 	
-	unsigned long int index;
+	size_t index;
 	int oks=0;
     
 	mpz_t mpz_x_f,mpz_x_r;
 	mpz_init_set_str(mpz_x_f,argv[5],10);
 	mpz_init_set_str(mpz_x_r,argv[6],10);
 
-    //gmp_printf("choose  X_f=%Zd X_r=%Zd\n",mpz_x_f,mpz_x_r);
+    gmp_printf("choose  X_f=%Zd X_r=%Zd\n",mpz_x_f,mpz_x_r);
 	size_t len;
 	char *tt;
 	__int64 x_f;
@@ -84,8 +89,8 @@ int main(int argc, char **argv)
 	tt=(char *)mpz_export(0, &len, 1, 1, 0, 0, mpz_x_r);
 	free(tt);
 	memcpy((char *)&x_r,mpz_x_r->_mp_d,len);
-	//printf("choose x_f=%I64d x_r=%I64d\n",x_f,x_r);
-	//printf("choose x_f=%lld x_r=%lld\n",x_f,x_r);
+	printf("choose x_f=%I64d x_r=%I64d\n",x_f,x_r);
+
 	int corrected=atoi(argv[8]);
 
 	for (int i=0;i<ll;i++)
@@ -148,7 +153,7 @@ int main(int argc, char **argv)
 
 		}
 		if (!F)
-			for ( __int64  jj=0;jj<x_r;jj++)
+			for ( jj=0;jj<x_r;jj++)
 			{
 
 				while(1)
@@ -180,7 +185,9 @@ int main(int argc, char **argv)
 // 			gmp_randclear(state2);
 	}
 	
-	printf("%d %f",oks,oks*1.0/ll);
+	DWORD t2=GetTickCount()-t1;
+	printf("\n%d\n",t2);
+	printf("OK %d %f\n",oks,oks*1.0/ll);
 	free (a);
   return 0;
 }
