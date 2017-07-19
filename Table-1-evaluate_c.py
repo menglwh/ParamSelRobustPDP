@@ -39,7 +39,7 @@ if 1==1:
 	delta="1.0e-10"
 	if numpy.size(sys.argv)>2:
 		delta=sys.argv[2]
-	MyFunc_0 (runindex,nums,p,files,string.atof(delta),str_savepath)
+	MyFunc_0 (runindex,nums,p,files,string.atof(delta),str_savepath) 
 
   
 
