@@ -30,7 +30,7 @@ if 1==1:
         runindex=91
     str_savepath="./tmp-test4"
     nums=101
-    p=numpy.linspace(0,0.02,nums)
+    p=numpy.linspace(0,0.02,nums) 
      
     #        for j in range(0,numpy.size(bits)):
                 #files=16000*numpy.power(2,bits[j])
