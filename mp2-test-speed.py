@@ -44,7 +44,7 @@ for j in range(0,numpy.size(bits)):
 			sys.stderr.write("all times is " + str(start2-start)+"\n")
 			sys.stderr.write("==========================\n"+str(datetime.datetime.now())+"\n")
 
-print "Finished"
+print "Finished" 
 
 
 
